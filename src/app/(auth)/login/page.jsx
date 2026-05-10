@@ -1,10 +1,11 @@
 'use client'
+import { authClient } from "@/lib/auth-client";
 import { Check } from "@gravity-ui/icons";
 import { Button, Description, FieldError, Form, Input, Label, TextField } from "@heroui/react";
 import Link from "next/link";
 
 const LoginPage = () => {
-    const onSubmit = (e) => {
+    const onSubmit = async(e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
@@ -12,6 +13,13 @@ const LoginPage = () => {
         // formData.forEach((value, key) => {
         //     data[key] = value.toString();
         // });
+        const { data:res, error } = await authClient.signIn.email({
+            email: data.email, // required
+            password: data.password, // required
+            rememberMe: true,
+            callbackURL: "/",
+        });
+        console.log(res,error)
 
     };
     return (
@@ -43,9 +51,7 @@ const LoginPage = () => {
                             if (value.length < 8) {
                                 return "Password must be at least 8 characters";
                             }
-                            if (!/[A-Z]/.test(value)) {
-                                return "Password must contain at least one uppercase letter";
-                            }
+    
                             if (!/[0-9]/.test(value)) {
                                 return "Password must contain at least one number";
                             }

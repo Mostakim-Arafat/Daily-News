@@ -16,7 +16,7 @@ const NewsCard = ({ n }) => {
             <Image
                 src={n.image_url}
                 alt='banner img'
-                width={100}
+                width={200}
                 height={100}
             >
 
